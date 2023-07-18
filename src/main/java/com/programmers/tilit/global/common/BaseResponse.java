@@ -23,6 +23,10 @@ public class BaseResponse<T> {
         return new BaseResponse<>(OK.value(), message.getValue(), data);
     }
 
+    public static BaseResponse<Object> created(SuccessMessage message) {
+        return new BaseResponse<>(CREATED.value(), message.getValue());
+    }
+
     public static BaseResponse<Object> error(ErrorCode error) {
         return new BaseResponse<>(error.getStatusCode(), error.getMessage());
     }

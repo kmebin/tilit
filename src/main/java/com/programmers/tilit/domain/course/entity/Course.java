@@ -16,6 +16,7 @@ import com.programmers.tilit.domain.user.entity.User;
 import com.programmers.tilit.global.common.BaseEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,4 +46,17 @@ public class Course extends BaseEntity {
     @ColumnDefault("0")
     @Column(name = "student_count", nullable = false)
     private int studentCount;
+
+    @Builder
+    private Course(User teacher, CourseCategory category, String name, String description, int price) {
+        this.teacher = teacher;
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    public static Course create(User teacher, CourseCategory category, String name, String description, int price) {
+        return new Course(teacher, category, name, description, price);
+    }
 }
