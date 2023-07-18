@@ -19,6 +19,10 @@ public class BaseResponse<T> {
     @JsonInclude(NON_NULL)
     private T data;
 
+    public static BaseResponse<Object> ok(SuccessMessage message) {
+        return new BaseResponse<>(OK.value(), message.getValue());
+    }
+
     public static <T> BaseResponse<T> ok(SuccessMessage message, T data) {
         return new BaseResponse<>(OK.value(), message.getValue(), data);
     }

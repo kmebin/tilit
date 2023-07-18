@@ -3,6 +3,7 @@ package com.programmers.tilit.domain.course.controller;
 import static com.programmers.tilit.global.common.SuccessMessage.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +34,11 @@ public class CourseController {
     public BaseResponse<Object> createCourse(@RequestBody CourseCreateRequest request) {
         courseService.createCourse(1L, request);
         return BaseResponse.created(CREATE_COURSE_SUCCESS);
+    }
+
+    @PatchMapping("/{courseId}")
+    public BaseResponse<Object> updateCourse(@PathVariable long courseId, @RequestBody CourseCreateRequest request) {
+        courseService.updateCourse(courseId, request);
+        return BaseResponse.ok(UPDATE_COURSE_SUCCESS);
     }
 }

@@ -38,6 +38,14 @@ public class CourseService {
         courseRepository.save(request.toEntity(teacher));
     }
 
+    @Transactional
+    public void updateCourse(long courseId, CourseCreateRequest request) {
+        Course course = findCourseOrThrow(courseId);
+        course.update(request.name(), request.description(), request.price());
+
+        courseRepository.save(course);
+    }
+
     private Course findCourseOrThrow(Long courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new CourseNotFoundException(NO_COURSE));
