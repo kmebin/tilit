@@ -65,7 +65,13 @@ public class Course extends BaseEntity {
     }
 
     public static Course create(User teacher, CourseCategory category, String name, String description, int price) {
-        return new Course(teacher, category, name, description, price);
+        return Course.builder()
+            .teacher(teacher)
+            .category(category)
+            .name(name)
+            .description(description)
+            .price(price)
+            .build();
     }
 
     public void update(String name, String description, int price) {

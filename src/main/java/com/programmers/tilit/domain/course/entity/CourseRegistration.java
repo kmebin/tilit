@@ -37,6 +37,9 @@ public class CourseRegistration extends BaseEntity {
     }
 
     public static CourseRegistration create(Course course, User student) {
-        return new CourseRegistration(course, student);
+        return CourseRegistration.builder()
+            .course(course)
+            .student(student)
+            .build();
     }
 }
