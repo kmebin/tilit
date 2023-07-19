@@ -48,6 +48,16 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    @Transactional
+    public void deleteCourse(long courseId) {
+        Course course = findCourseOrThrow(courseId);
+
+        if (course.hasStudents()) {
+            throw new CourseConflictException(CAN_NOT_DELETE_COURSE);
+        }
+        courseRepository.deleteById(courseId);
+    }
+
     private Course findCourseOrThrow(Long courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new CourseNotFoundException(NO_COURSE));

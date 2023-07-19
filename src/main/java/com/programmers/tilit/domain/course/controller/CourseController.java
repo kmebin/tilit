@@ -2,6 +2,7 @@ package com.programmers.tilit.domain.course.controller;
 
 import static com.programmers.tilit.global.common.SuccessMessage.*;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,5 +41,11 @@ public class CourseController {
     public BaseResponse<Object> updateCourse(@PathVariable long courseId, @RequestBody CourseCreateRequest request) {
         courseService.updateCourse(courseId, request);
         return BaseResponse.ok(UPDATE_COURSE_SUCCESS);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public BaseResponse<Object> deleteCourse(@PathVariable long courseId) {
+        courseService.deleteCourse(courseId);
+        return BaseResponse.ok(DELETE_COURSE_SUCCESS);
     }
 }

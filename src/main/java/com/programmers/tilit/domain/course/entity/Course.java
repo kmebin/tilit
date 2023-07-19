@@ -65,4 +65,8 @@ public class Course extends BaseEntity {
         this.description = description;
         this.price = price;
     }
+
+    public boolean hasStudents() {
+        return studentCount > 0;
+    }
 }

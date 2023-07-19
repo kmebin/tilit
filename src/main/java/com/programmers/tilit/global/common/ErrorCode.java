@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum ErrorCode {
     NO_COURSE(NOT_FOUND, "존재하지 않는 강의입니다."),
     DUPLICATE_COURSE_NAME(CONFLICT, "이미 존재하는 강의명입니다."),
+    CAN_NOT_DELETE_COURSE(CONFLICT, "수강생이 있는 강의는 삭제할 수 없습니다."),
 
     NO_USER(NOT_FOUND, "존재하지 않는 유저입니다.");
 
