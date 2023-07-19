@@ -2,21 +2,24 @@ package com.programmers.tilit.domain.course.service;
 
 import static com.programmers.tilit.global.common.ErrorCode.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.tilit.domain.course.dto.request.CourseCreateRequest;
+import com.programmers.tilit.domain.course.dto.request.CoursesRequest;
+import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
 import com.programmers.tilit.domain.course.dto.response.CourseResponse;
 import com.programmers.tilit.domain.course.entity.Course;
 import com.programmers.tilit.domain.course.exception.CourseConflictException;
 import com.programmers.tilit.domain.course.exception.CourseNotFoundException;
 import com.programmers.tilit.domain.course.repository.CourseRepository;
-import com.programmers.tilit.domain.user.entity.User;
 import com.programmers.tilit.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @Service
 @RequiredArgsConstructor
@@ -25,16 +28,23 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserService userService;
 
-    public CourseResponse getCourse(Long courseId) {
-        Course course = findCourseOrThrow(courseId);
-        return CourseResponse.from(course);
+    public List<CourseResponse> getCourses(CoursesRequest request) {
+        val courses = courseRepository.findCourses(request.name(), request.teacher(), request.category());
+        return courses.stream()
+            .map(CourseResponse::from)
+            .toList();
+    }
+
+    public CourseDetailResponse getCourse(Long courseId) {
+        val course = findCourseOrThrow(courseId);
+        return CourseDetailResponse.from(course);
     }
 
     @Transactional
     public void createCourse(Long userId, CourseCreateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()));
 
-        User teacher = userService.findUserOrThrow(userId);
+        val teacher = userService.findUserOrThrow(userId);
         courseRepository.save(request.toEntity(teacher));
     }
 
@@ -42,7 +52,7 @@ public class CourseService {
     public void updateCourse(long courseId, CourseCreateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()), courseId);
 
-        Course course = findCourseOrThrow(courseId);
+        val course = findCourseOrThrow(courseId);
         course.update(request.name(), request.description(), request.price());
 
         courseRepository.save(course);
@@ -50,7 +60,7 @@ public class CourseService {
 
     @Transactional
     public void deleteCourse(long courseId) {
-        Course course = findCourseOrThrow(courseId);
+        val course = findCourseOrThrow(courseId);
 
         if (course.hasStudents()) {
             throw new CourseConflictException(CAN_NOT_DELETE_COURSE);
