@@ -16,7 +16,8 @@ public enum ErrorCode {
     CAN_NOT_DELETE_COURSE(CONFLICT, "수강생이 있는 강의는 삭제할 수 없습니다."),
     ALREADY_REGISTER_COURSE(CONFLICT, "이미 수강 중인 강의가 있습니다."),
 
-    NO_USER(NOT_FOUND, "존재하지 않는 유저입니다.");
+    NO_USER(NOT_FOUND, "존재하지 않는 유저입니다."),
+    DUPLICATE_USER_EMAIL(CONFLICT, "이미 사용 중인 이메일입니다.");
 
     private final HttpStatus status;
     private final String message;

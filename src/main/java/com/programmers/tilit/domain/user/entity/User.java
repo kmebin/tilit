@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 import com.programmers.tilit.global.common.BaseEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,19 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @Builder
+    private User(String email, String nickname, String password) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
+
+    public static User create(String email, String password) {
+        return User.builder()
+            .email(email)
+            .nickname(email.substring(0, email.indexOf('@')))
+            .password(password)
+            .build();
+    }
 }
