@@ -40,6 +40,8 @@ public class CourseService {
 
     @Transactional
     public void updateCourse(long courseId, CourseCreateRequest request) {
+        validateDuplicate(courseRepository.findByName(request.name()), courseId);
+
         Course course = findCourseOrThrow(courseId);
         course.update(request.name(), request.description(), request.price());
 
@@ -54,6 +56,14 @@ public class CourseService {
     private void validateDuplicate(Optional<Course> course) {
         course.ifPresent(c -> {
             throw new CourseConflictException(DUPLICATE_COURSE_NAME);
+        });
+    }
+
+    private void validateDuplicate(Optional<Course> course, Long courseId) {
+        course.ifPresent(c -> {
+            if (!c.getId().equals(courseId)) {
+                throw new CourseConflictException(DUPLICATE_COURSE_NAME);
+            }
         });
     }
 }

@@ -34,7 +34,7 @@ public class Course extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CourseCategory category;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
