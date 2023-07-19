@@ -11,7 +11,8 @@ public enum SuccessMessage {
     READ_COURSE_SUCCESS("강의 상세 조회 성공"),
     CREATE_COURSE_SUCCESS("강의 생성 성공"),
     UPDATE_COURSE_SUCCESS("강의 수정 성공"),
-    DELETE_COURSE_SUCCESS("강의 삭제 성공");
+    DELETE_COURSE_SUCCESS("강의 삭제 성공"),
+    REGISTER_COURSE_SUCCESS("강의 수강 신청 성공");
 
     private final String value;
 }

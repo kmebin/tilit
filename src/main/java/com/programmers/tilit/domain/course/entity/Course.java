@@ -1,5 +1,8 @@
 package com.programmers.tilit.domain.course.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
@@ -19,6 +23,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.val;
 
 @Getter
 @Entity
@@ -47,6 +52,9 @@ public class Course extends BaseEntity {
     @Column(name = "student_count", nullable = false)
     private int studentCount;
 
+    @OneToMany(mappedBy = "course")
+    private final List<CourseRegistration> courseRegistrations = new ArrayList<>();
+
     @Builder
     private Course(User teacher, CourseCategory category, String name, String description, int price) {
         this.teacher = teacher;
@@ -66,7 +74,21 @@ public class Course extends BaseEntity {
         this.price = price;
     }
 
+    public CourseRegistration register(User student) {
+        studentCount++;
+
+        val courseRegistration = CourseRegistration.create(this, student);
+        courseRegistrations.add(courseRegistration);
+
+        return courseRegistration;
+    }
+
     public boolean hasStudents() {
         return studentCount > 0;
+    }
+
+    public boolean isAlreadyRegistered(User student) {
+        return courseRegistrations.stream()
+            .anyMatch(registration -> registration.getStudent().equals(student));
     }
 }

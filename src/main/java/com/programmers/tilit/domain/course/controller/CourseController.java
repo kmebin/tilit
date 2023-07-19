@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.programmers.tilit.domain.course.dto.request.CourseCreateRequest;
+import com.programmers.tilit.domain.course.dto.request.CoursesRegisterRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRequest;
 import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
 import com.programmers.tilit.domain.course.dto.response.CourseResponse;
@@ -36,7 +37,7 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}")
-    public BaseResponse<CourseDetailResponse> getCourse(@PathVariable long courseId) {
+    public BaseResponse<CourseDetailResponse> getCourse(@PathVariable Long courseId) {
         val data = courseService.getCourse(courseId);
         return BaseResponse.ok(READ_COURSE_SUCCESS, data);
     }
@@ -48,14 +49,20 @@ public class CourseController {
     }
 
     @PatchMapping("/{courseId}")
-    public BaseResponse<Object> updateCourse(@PathVariable long courseId, @RequestBody CourseCreateRequest request) {
+    public BaseResponse<Object> updateCourse(@PathVariable Long courseId, @RequestBody CourseCreateRequest request) {
         courseService.updateCourse(courseId, request);
         return BaseResponse.ok(UPDATE_COURSE_SUCCESS);
     }
 
     @DeleteMapping("/{courseId}")
-    public BaseResponse<Object> deleteCourse(@PathVariable long courseId) {
+    public BaseResponse<Object> deleteCourse(@PathVariable Long courseId) {
         courseService.deleteCourse(courseId);
         return BaseResponse.ok(DELETE_COURSE_SUCCESS);
+    }
+
+    @PostMapping("/register")
+    public BaseResponse<Object> registerCourses(@RequestBody CoursesRegisterRequest request) {
+        courseService.registerCourses(1L, request);
+        return BaseResponse.created(REGISTER_COURSE_SUCCESS);
     }
 }
