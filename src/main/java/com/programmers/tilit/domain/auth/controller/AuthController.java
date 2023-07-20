@@ -4,7 +4,6 @@ import static com.programmers.tilit.global.common.SuccessMessage.*;
 import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,6 @@ import com.programmers.tilit.domain.auth.service.AuthService;
 import com.programmers.tilit.global.common.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,9 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public BaseResponse<Object> logOut(HttpServletRequest request) {
-        val session = request.getSession(false);
-
+    public BaseResponse<Object> logOut(HttpSession session) {
         if (!isNull(session)) {
             session.invalidate();
         }
