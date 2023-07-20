@@ -1,10 +1,10 @@
 package com.programmers.tilit.domain.course.controller;
 
 import static com.programmers.tilit.global.common.SuccessMessage.*;
+import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public BaseResponse<Object> createCourse(@RequestBody CourseCreateRequest request) {
         courseService.createCourse(1L, request);
         return BaseResponse.created(CREATE_COURSE_SUCCESS);
@@ -64,7 +64,7 @@ public class CourseController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public BaseResponse<Object> registerCourses(@RequestBody CoursesRegisterRequest request) {
         courseService.registerCourses(1L, request);
         return BaseResponse.created(REGISTER_COURSE_SUCCESS);

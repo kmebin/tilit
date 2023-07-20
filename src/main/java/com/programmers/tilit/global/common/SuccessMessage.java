@@ -14,7 +14,8 @@ public enum SuccessMessage {
     DELETE_COURSE_SUCCESS("강의 삭제 성공"),
     REGISTER_COURSE_SUCCESS("강의 수강 신청 성공"),
 
-    CREATE_USER_SUCCESS("회원 가입 성공");
+    CREATE_USER_SUCCESS("회원 가입 성공"),
+    LOGIN_SUCCESS("로그인 성공");
 
     private final String value;
 }

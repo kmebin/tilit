@@ -1,8 +1,8 @@
 package com.programmers.tilit.domain.user.controller;
 
 import static com.programmers.tilit.global.common.SuccessMessage.*;
+import static org.springframework.http.HttpStatus.*;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public BaseResponse<Object> createUser(@RequestBody UserCreateRequest request) {
         userService.signup(request);
         return BaseResponse.created(CREATE_USER_SUCCESS);
