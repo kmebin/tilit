@@ -1,6 +1,7 @@
 package com.programmers.tilit.domain.user.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 
 import org.hibernate.annotations.SQLDelete;
@@ -26,6 +27,7 @@ public class User extends BaseEntity {
     private String nickname;
 
     @Column(nullable = false)
+    @Convert(converter = PasswordConverter.class)
     private String password;
 
     @Builder
