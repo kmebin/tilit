@@ -10,6 +10,7 @@ import com.programmers.tilit.domain.auth.exception.AuthBadRequestException;
 import com.programmers.tilit.domain.auth.exception.UnauthorizedException;
 import com.programmers.tilit.domain.course.exception.CourseConflictException;
 import com.programmers.tilit.domain.course.exception.CourseNotFoundException;
+import com.programmers.tilit.domain.user.exception.UserBadRequestException;
 import com.programmers.tilit.domain.user.exception.UserConflictException;
 import com.programmers.tilit.domain.user.exception.UserNotFoundException;
 import com.programmers.tilit.global.common.BaseResponse;
@@ -21,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionControllerAdvice {
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({
-        AuthBadRequestException.class
+        AuthBadRequestException.class,
+        UserBadRequestException.class
     })
     public BaseResponse<Object> handleBadRequestException(CustomException exception) {
         log.error("[BadRequestException] => ", exception);
