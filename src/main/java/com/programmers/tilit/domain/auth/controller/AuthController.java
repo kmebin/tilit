@@ -1,8 +1,10 @@
 package com.programmers.tilit.domain.auth.controller;
 
 import static com.programmers.tilit.global.common.SuccessMessage.*;
+import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import com.programmers.tilit.domain.auth.service.AuthService;
 import com.programmers.tilit.global.common.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,11 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     @ResponseStatus(CREATED)
     public BaseResponse<Object> signUp(@RequestBody SignupRequest request) {
         authService.signUp(request);
-        return BaseResponse.created(CREATE_USER_SUCCESS);
+        return BaseResponse.created(SIGN_UP_SUCCESS);
     }
 
     @PostMapping("/login")
@@ -36,6 +39,16 @@ public class AuthController {
         var user = authService.logIn(request);
         session.setAttribute("user", user);
 
-        return BaseResponse.ok(LOGIN_SUCCESS);
+        return BaseResponse.ok(LOG_IN_SUCCESS);
+    }
+
+    @PostMapping("/logout")
+    public BaseResponse<Object> logOut(HttpServletRequest request) {
+        val session = request.getSession(false);
+
+        if (!isNull(session)) {
+            session.invalidate();
+        }
+        return BaseResponse.ok(LOG_OUT_SUCCESS);
     }
 }
