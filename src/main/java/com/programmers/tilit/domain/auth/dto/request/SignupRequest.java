@@ -1,8 +1,8 @@
-package com.programmers.tilit.domain.user.dto.request;
+package com.programmers.tilit.domain.auth.dto.request;
 
 import com.programmers.tilit.domain.user.entity.User;
 
-public record UserCreateRequest(
+public record SignupRequest(
     String email,
     String password
 ) {

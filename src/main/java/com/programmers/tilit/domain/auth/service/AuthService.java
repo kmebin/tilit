@@ -2,12 +2,17 @@ package com.programmers.tilit.domain.auth.service;
 
 import static com.programmers.tilit.global.common.ErrorCode.*;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.tilit.domain.auth.dto.request.LoginRequest;
+import com.programmers.tilit.domain.auth.dto.request.SignupRequest;
 import com.programmers.tilit.domain.auth.dto.response.UserResponse;
 import com.programmers.tilit.domain.auth.exception.AuthBadRequestException;
+import com.programmers.tilit.domain.user.entity.User;
+import com.programmers.tilit.domain.user.exception.UserConflictException;
 import com.programmers.tilit.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,10 +23,22 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
     private final UserRepository userRepository;
 
-    public UserResponse login(LoginRequest request) {
+    @Transactional
+    public void signUp(SignupRequest request) {
+        validateDuplicate(userRepository.findByEmail(request.email()));
+        userRepository.save(request.toEntity());
+    }
+
+    public UserResponse logIn(LoginRequest request) {
         return userRepository.findByEmail(request.email())
             .filter(user -> user.getPassword().equals(request.password()))
             .map(UserResponse::from)
             .orElseThrow(() -> new AuthBadRequestException(LOGIN_FAIL));
+    }
+
+    private void validateDuplicate(Optional<User> user) {
+        user.ifPresent(u -> {
+            throw new UserConflictException(DUPLICATE_USER_EMAIL);
+        });
     }
 }

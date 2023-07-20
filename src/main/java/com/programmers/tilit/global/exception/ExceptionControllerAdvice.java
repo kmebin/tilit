@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.programmers.tilit.domain.auth.exception.AuthBadRequestException;
 import com.programmers.tilit.domain.course.exception.CourseConflictException;
 import com.programmers.tilit.domain.course.exception.CourseNotFoundException;
+import com.programmers.tilit.domain.user.exception.UserConflictException;
 import com.programmers.tilit.domain.user.exception.UserNotFoundException;
 import com.programmers.tilit.global.common.BaseResponse;
 
@@ -38,7 +39,8 @@ public class ExceptionControllerAdvice {
 
     @ResponseStatus(CONFLICT)
     @ExceptionHandler({
-        CourseConflictException.class
+        CourseConflictException.class,
+        UserConflictException.class
     })
     public BaseResponse<Object> handleConflictException(CustomException exception) {
         log.error("[ConflictException] => ", exception);
