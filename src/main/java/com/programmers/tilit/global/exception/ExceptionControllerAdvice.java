@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.programmers.tilit.domain.auth.exception.AuthBadRequestException;
+import com.programmers.tilit.domain.auth.exception.UnauthorizedException;
 import com.programmers.tilit.domain.course.exception.CourseConflictException;
 import com.programmers.tilit.domain.course.exception.CourseNotFoundException;
 import com.programmers.tilit.domain.user.exception.UserConflictException;
@@ -24,6 +25,13 @@ public class ExceptionControllerAdvice {
     })
     public BaseResponse<Object> handleBadRequestException(CustomException exception) {
         log.error("[BadRequestException] => ", exception);
+        return BaseResponse.error(exception.getError());
+    }
+
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    public BaseResponse<Object> handleUnauthorizedException(CustomException exception) {
+        log.error("[UnauthorizedException] => ", exception);
         return BaseResponse.error(exception.getError());
     }
 

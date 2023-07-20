@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.tilit.domain.auth.dto.request.LoginRequest;
 import com.programmers.tilit.domain.auth.dto.request.SignupRequest;
-import com.programmers.tilit.domain.auth.dto.response.UserResponse;
+import com.programmers.tilit.domain.auth.dto.response.SessionUser;
 import com.programmers.tilit.domain.auth.exception.AuthBadRequestException;
 import com.programmers.tilit.domain.user.entity.User;
 import com.programmers.tilit.domain.user.exception.UserConflictException;
@@ -29,10 +29,10 @@ public class AuthService {
         userRepository.save(request.toEntity());
     }
 
-    public UserResponse logIn(LoginRequest request) {
+    public SessionUser logIn(LoginRequest request) {
         return userRepository.findByEmail(request.email())
             .filter(user -> user.getPassword().equals(request.password()))
-            .map(UserResponse::from)
+            .map(SessionUser::from)
             .orElseThrow(() -> new AuthBadRequestException(LOGIN_FAIL));
     }
 
