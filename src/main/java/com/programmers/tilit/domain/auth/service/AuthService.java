@@ -4,6 +4,7 @@ import static com.programmers.tilit.global.common.ErrorCode.*;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class AuthService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signUp(SignupRequest request) {
@@ -31,7 +33,7 @@ public class AuthService {
 
     public SessionUser logIn(LoginRequest request) {
         return userRepository.findByEmail(request.email())
-            .filter(user -> user.getPassword().equals(request.password()))
+            .filter(user -> passwordEncoder.matches(request.password(), user.getPassword()))
             .map(SessionUser::from)
             .orElseThrow(() -> new AuthBadRequestException(LOGIN_FAIL));
     }
