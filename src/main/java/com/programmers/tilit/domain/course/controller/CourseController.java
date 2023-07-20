@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.programmers.tilit.domain.auth.dto.response.SessionUser;
 import com.programmers.tilit.domain.course.dto.request.CourseCreateRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRegisterRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRequest;
@@ -22,6 +23,7 @@ import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
 import com.programmers.tilit.domain.course.dto.response.CourseResponse;
 import com.programmers.tilit.domain.course.service.CourseService;
 import com.programmers.tilit.global.common.BaseResponse;
+import com.programmers.tilit.global.common.annotation.LoginUser;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -46,8 +48,8 @@ public class CourseController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public BaseResponse<Object> createCourse(@RequestBody CourseCreateRequest request) {
-        courseService.createCourse(1L, request);
+    public BaseResponse<Object> createCourse(@LoginUser SessionUser user, @RequestBody CourseCreateRequest request) {
+        courseService.createCourse(user.id(), request);
         return BaseResponse.created(CREATE_COURSE_SUCCESS);
     }
 
@@ -65,8 +67,8 @@ public class CourseController {
 
     @PostMapping("/register")
     @ResponseStatus(CREATED)
-    public BaseResponse<Object> registerCourses(@RequestBody CoursesRegisterRequest request) {
-        courseService.registerCourses(1L, request);
+    public BaseResponse<Object> registerCourses(@LoginUser SessionUser user, @RequestBody CoursesRegisterRequest request) {
+        courseService.registerCourses(user.id(), request);
         return BaseResponse.created(REGISTER_COURSE_SUCCESS);
     }
 }
