@@ -2,7 +2,6 @@ package com.programmers.tilit.domain.course.service;
 
 import static com.programmers.tilit.global.common.ErrorCode.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.tilit.domain.course.dto.request.CourseCreateRequest;
+import com.programmers.tilit.domain.course.dto.request.CourseUpdateRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRegisterRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRequest;
 import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
@@ -54,7 +54,7 @@ public class CourseService {
     }
 
     @Transactional
-    public void updateCourse(Long courseId, CourseCreateRequest request) {
+    public void updateCourse(Long courseId, CourseUpdateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()), courseId);
 
         val course = findCourseOrThrow(courseId);
@@ -77,7 +77,7 @@ public class CourseService {
     public void registerCourses(Long userId, CoursesRegisterRequest request) {
         val student = userService.findUserOrThrow(userId);
 
-        Arrays.stream(request.courseIds())
+        request.courseIds().stream()
             .map(this::findCourseOrThrow)
             .forEach(course -> registerCourse(course, student));
     }

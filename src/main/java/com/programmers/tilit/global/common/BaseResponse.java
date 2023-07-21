@@ -3,6 +3,8 @@ package com.programmers.tilit.global.common;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
 import static org.springframework.http.HttpStatus.*;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AccessLevel;
@@ -33,5 +35,9 @@ public class BaseResponse<T> {
 
     public static BaseResponse<Object> error(ErrorCode error) {
         return new BaseResponse<>(error.getStatusCode(), error.getMessage());
+    }
+
+    public static BaseResponse<Object> error(HttpStatus status, String message) {
+        return new BaseResponse<>(status.value(), message);
     }
 }

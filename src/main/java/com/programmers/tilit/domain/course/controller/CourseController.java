@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programmers.tilit.domain.auth.dto.response.SessionUser;
 import com.programmers.tilit.domain.course.dto.request.CourseCreateRequest;
+import com.programmers.tilit.domain.course.dto.request.CourseUpdateRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRegisterRequest;
 import com.programmers.tilit.domain.course.dto.request.CoursesRequest;
 import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
@@ -48,13 +51,13 @@ public class CourseController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public BaseResponse<Object> createCourse(@LoginUser SessionUser user, @RequestBody CourseCreateRequest request) {
+    public BaseResponse<Object> createCourse(@LoginUser SessionUser user, @Valid @RequestBody CourseCreateRequest request) {
         courseService.createCourse(user.id(), request);
         return BaseResponse.created(CREATE_COURSE_SUCCESS);
     }
 
     @PatchMapping("/{courseId}")
-    public BaseResponse<Object> updateCourse(@PathVariable Long courseId, @RequestBody CourseCreateRequest request) {
+    public BaseResponse<Object> updateCourse(@PathVariable Long courseId, @Valid @RequestBody CourseUpdateRequest request) {
         courseService.updateCourse(courseId, request);
         return BaseResponse.ok(UPDATE_COURSE_SUCCESS);
     }
@@ -67,7 +70,7 @@ public class CourseController {
 
     @PostMapping("/register")
     @ResponseStatus(CREATED)
-    public BaseResponse<Object> registerCourses(@LoginUser SessionUser user, @RequestBody CoursesRegisterRequest request) {
+    public BaseResponse<Object> registerCourses(@LoginUser SessionUser user, @Valid @RequestBody CoursesRegisterRequest request) {
         courseService.registerCourses(user.id(), request);
         return BaseResponse.created(REGISTER_COURSE_SUCCESS);
     }

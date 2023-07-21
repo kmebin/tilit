@@ -8,13 +8,13 @@ import lombok.Builder;
 public record SessionUser(
     Long id,
     String email,
-    String password
+    String nickname
 ) {
     public static SessionUser from(User user) {
         return SessionUser.builder()
             .id(user.getId())
             .email(user.getEmail())
-            .password(user.getPassword())
+            .nickname(user.getNickname())
             .build();
     }
 }

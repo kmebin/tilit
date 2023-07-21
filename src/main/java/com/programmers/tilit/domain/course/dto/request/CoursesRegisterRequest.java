@@ -1,6 +1,11 @@
 package com.programmers.tilit.domain.course.dto.request;
 
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 public record CoursesRegisterRequest(
-    Long[] courseIds
+    @NotNull
+    List<Long> courseIds
 ) {
 }

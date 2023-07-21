@@ -5,6 +5,7 @@ import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,13 +28,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(CREATED)
-    public BaseResponse<Object> signUp(@RequestBody SignupRequest request) {
+    public BaseResponse<Object> signUp(@RequestBody @Valid SignupRequest request) {
         authService.signUp(request);
         return BaseResponse.created(SIGN_UP_SUCCESS);
     }
 
     @PostMapping("/login")
-    public BaseResponse<Object> logIn(@RequestBody LoginRequest request, HttpSession session) {
+    public BaseResponse<Object> logIn(@RequestBody @Valid LoginRequest request, HttpSession session) {
         var user = authService.logIn(request);
         session.setAttribute("user", user);
 
