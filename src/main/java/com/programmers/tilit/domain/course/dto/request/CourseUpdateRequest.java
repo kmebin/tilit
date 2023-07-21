@@ -6,15 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public record CourseUpdateRequest(
-    @NotBlank
-    @Size(max = 100)
-    String name,
-
-    @NotBlank
-    String description,
-
-    @Min(0)
-    @NotNull
-    Integer price
+    @NotBlank @Size(max = 100) String name,
+    @NotBlank String description,
+    @NotNull @Min(0) Integer price
 ) {
 }

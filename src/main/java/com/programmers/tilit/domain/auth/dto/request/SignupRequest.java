@@ -7,13 +7,8 @@ import javax.validation.constraints.Size;
 import com.programmers.tilit.domain.user.entity.User;
 
 public record SignupRequest(
-    @Email
-    @NotBlank
-    String email,
-
-    @NotBlank
-    @Size(min = 8, max = 32)
-    String password
+    @Email @NotBlank String email,
+    @NotBlank @Size(min = 8, max = 32) String password
 ) {
     public User toEntity() {
         return User.create(email, password);

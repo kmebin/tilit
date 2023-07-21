@@ -5,12 +5,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public record LoginRequest(
-    @Email
-    @NotBlank
-    String email,
+    @NotBlank @Email String email,
 
-    @NotBlank
-    @Size(min = 8, max = 32)
-    String password
+    @NotBlank @Size(min = 8, max = 32) String password
 ) {
 }

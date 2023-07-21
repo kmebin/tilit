@@ -10,19 +10,10 @@ import com.programmers.tilit.domain.course.entity.CourseCategory;
 import com.programmers.tilit.domain.user.entity.User;
 
 public record CourseCreateRequest(
-    @NotNull
-    CourseCategory category,
-
-    @NotBlank
-    @Size(max = 100)
-    String name,
-
-    @NotBlank
-    String description,
-
-    @Min(0)
-    @NotNull
-    Integer price
+    @NotNull CourseCategory category,
+    @NotBlank @Size(max = 100) String name,
+    @NotBlank String description,
+    @NotNull @Min(0) Integer price
 ) {
     public Course toEntity(User teacher) {
         return Course.create(teacher, category, name, description, price);

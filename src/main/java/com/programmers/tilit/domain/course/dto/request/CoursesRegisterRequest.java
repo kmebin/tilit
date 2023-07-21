@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 public record CoursesRegisterRequest(
-    @NotNull
-    List<Long> courseIds
+    @NotNull List<Long> courseIds
 ) {
 }
