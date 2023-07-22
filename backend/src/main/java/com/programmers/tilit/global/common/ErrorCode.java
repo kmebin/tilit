@@ -20,8 +20,7 @@ public enum ErrorCode {
     ALREADY_REGISTER_COURSE(CONFLICT, "이미 수강 중인 강의가 있습니다."),
 
     NO_USER(NOT_FOUND, "존재하지 않는 유저입니다."),
-    DUPLICATE_USER_EMAIL(CONFLICT, "이미 사용 중인 이메일입니다."),
-    INVALID_NICKNAME(BAD_REQUEST, "닉네임은 20자를 넘을 수 없습니다.");
+    DUPLICATE_USER_EMAIL(CONFLICT, "이미 사용 중인 이메일입니다.");
 
     private final HttpStatus status;
     private final String message;
