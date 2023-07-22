@@ -1,16 +1,13 @@
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import CourseList from './components/course/CourseList';
-import Cart from './components/course/Cart';
-import SearchBar from './components/common/SearchBar';
-import { getCourses, registerCourses } from './apis/course';
+import CourseList from '../components/course/CourseList';
+import Cart from '../components/course/Cart';
+import SearchBar from '../components/common/SearchBar';
+import { getCourses, registerCourses } from '../apis/course';
 
-function App() {
+const Main = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
-  const [searchInput, setSearchInput] = useState({ keyword: '', category: '' });
 
   const handleAddToCart = (courseId) => {
     const course = courses.find((course) => course.id === courseId);
@@ -74,6 +71,6 @@ function App() {
       </Card>
     </Container>
   );
-}
+};
 
-export default App;
+export default Main;
