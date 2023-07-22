@@ -34,7 +34,7 @@ public class CourseService {
     private final UserService userService;
 
     public List<CourseResponse> getCourses(CoursesRequest request) {
-        val courses = courseRepository.findCourses(request.name(), request.teacher(), request.category());
+        val courses = courseRepository.findCourses(request.category(), request.keyword());
         return courses.stream()
             .map(CourseResponse::from)
             .toList();

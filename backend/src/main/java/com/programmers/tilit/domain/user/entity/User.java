@@ -24,7 +24,6 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(nullable = false)
-    @Convert(converter = NicknameConverter.class)
     private String nickname;
 
     @Column(nullable = false)
@@ -41,7 +40,7 @@ public class User extends BaseEntity {
     public static User create(String email, String password) {
         return User.builder()
             .email(email)
-            .nickname(email)
+            .nickname(email.substring(0, email.indexOf('@')))
             .password(password)
             .build();
     }

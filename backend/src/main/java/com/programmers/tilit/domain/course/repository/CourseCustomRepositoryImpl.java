@@ -15,7 +15,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,32 +22,13 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Course> findCourses(final String name, final String teacher, final CourseCategory category) {
-        val query = jpaQueryFactory.selectFrom(course);
-
-        if (!hasText(teacher)) {
-            query.innerJoin(course.teacher, user);
-        }
-        
-        return query.where(
-            containsName(name),
-            containsTeacher(teacher),
-            equalCategory(category)
-        ).fetch();
-    }
-
-    private BooleanExpression containsName(String name) {
-        if (!hasText(name)) {
-            return null;
-        }
-        return course.name.contains(name);
-    }
-
-    private BooleanExpression containsTeacher(String teacher) {
-        if (!hasText(teacher)) {
-            return null;
-        }
-        return course.teacher.nickname.contains(teacher);
+    public List<Course> findCourses(final CourseCategory category, final String keyword) {
+        return jpaQueryFactory.selectFrom(course)
+            .innerJoin(course.teacher, user)
+            .where(
+                equalCategory(category),
+                containsKeyword(keyword)
+            ).fetch();
     }
 
     private BooleanExpression equalCategory(CourseCategory category) {
@@ -56,5 +36,12 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
             return null;
         }
         return course.category.eq(category);
+    }
+
+    private BooleanExpression containsKeyword(String keyword) {
+        if (!hasText(keyword)) {
+            return null;
+        }
+        return course.name.contains(keyword).or(course.teacher.nickname.contains(keyword));
     }
 }
