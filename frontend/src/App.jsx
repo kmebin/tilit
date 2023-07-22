@@ -1,21 +1,26 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import CourseList from './components/CourseList';
-import { getCourses } from './apis/course';
+import CourseList from './components/course/CourseList';
+import { getCourses, registerCourses } from './apis/course';
+import Cart from './components/course/Cart';
 
 function App() {
   const [courses, setCourses] = useState([]);
-  const [items, setItems] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
 
   const handleAddToCart = (courseId) => {
     const course = courses.find((course) => course.id === courseId);
-    const found = items.find((item) => item.courseId === courseId);
+    const found = selectedCourses.find((course) => course.id === courseId);
     const updatedItems = found
-      ? items.map((item) => (item.courseId === courseId ? { ...item, count: item.count + 1 } : item))
-      : [...items, { ...course, count: 1 }];
+      ? selectedCourses.map((item) => (item.courseId === courseId ? { ...item, count: item.count + 1 } : item))
+      : [...selectedCourses, { ...course, count: 1 }];
 
-    setItems(updatedItems);
+    setSelectedCourses(updatedItems);
+  };
+
+  const handleRegister = async (courseIds) => {
+    await registerCourses(courseIds);
   };
 
   useEffect(() => {
@@ -35,6 +40,9 @@ function App() {
         <div className='row'>
           <div className='col-md-8 mt-4 d-flex flex-column align-items-start p-3 pt-0'>
             <CourseList courses={courses} onClickAddToCart={handleAddToCart} />
+          </div>
+          <div className='col-md-4 summary p-4'>
+            <Cart courses={selectedCourses} onClickRegister={handleRegister} />
           </div>
         </div>
       </div>
