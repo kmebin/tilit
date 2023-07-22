@@ -19,7 +19,8 @@ const Cart = ({ courses, onClickRegister }) => {
       {courses.map((course) => (
         <CartItem {...course} />
       ))}
-      <Row className='pt-3 pb-2 border-top'>
+      <hr />
+      <Row className='pt-2 pb-3'>
         <Col>
           <h5>총 금액</h5>
         </Col>

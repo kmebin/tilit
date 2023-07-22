@@ -1,8 +1,6 @@
 import { Card } from 'react-bootstrap';
 
-const CartItem = (props) => {
-  const { name, price } = props;
-
+const CartItem = ({ name, price }) => {
   return (
     <Card style={{ margin: '10px' }}>
       <Card.Body style={{ display: 'flex', justifyContent: 'space-between' }}>

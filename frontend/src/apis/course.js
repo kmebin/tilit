@@ -1,7 +1,8 @@
 import { client } from './index';
 
-export const getCourses = async () => {
-  const { data } = await client.get('/courses');
+export const getCourses = async (category, keyword) => {
+  const params = { category, keyword };
+  const { data } = await client.get('/courses', { params });
   return data.data;
 };
 
