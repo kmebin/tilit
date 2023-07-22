@@ -10,6 +10,7 @@ public record CourseDetailResponse(
     Long id,
     CourseCategory category,
     String name,
+    String teacher,
     String description,
     int price,
     int studentCount
@@ -19,6 +20,7 @@ public record CourseDetailResponse(
             .id(course.getId())
             .category(course.getCategory())
             .name(course.getName())
+            .teacher(course.getTeacher().getNickname())
             .description(course.getDescription())
             .price(course.getPrice())
             .studentCount(course.getStudentCount())
