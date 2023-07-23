@@ -38,7 +38,7 @@ public class AuthController {
         var user = authService.logIn(request);
         session.setAttribute("user", user);
 
-        return BaseResponse.ok(LOG_IN_SUCCESS);
+        return BaseResponse.ok(LOG_IN_SUCCESS, user);
     }
 
     @PostMapping("/logout")

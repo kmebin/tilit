@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ErrorCode {
     LOGIN_FAIL(BAD_REQUEST, "이메일 또는 비밀번호가 맞지 않습니다."),
-    UNAUTHORIZED_USER(UNAUTHORIZED, "인증되지 않은 요청입니다."),
+    UNAUTHORIZED_USER(UNAUTHORIZED, "인증되지 않은 요청입니다. 로그인을 해주세요."),
 
     NO_COURSE(NOT_FOUND, "존재하지 않는 강의입니다."),
     DUPLICATE_COURSE_NAME(CONFLICT, "이미 존재하는 강의명입니다."),
