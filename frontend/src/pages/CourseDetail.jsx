@@ -15,8 +15,12 @@ const CourseDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const courses = await getCourseDetail(courseId);
-      setCourseDetail(courses);
+      const res = await getCourseDetail(courseId);
+      if (res.status === 200) {
+        setCourseDetail(res.data);
+      } else {
+        alert(res.message);
+      }
     };
     fetchData();
   }, [courseId]);

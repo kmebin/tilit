@@ -1,6 +1,16 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-const CourseInfo = ({ id, category, name, teacher, description, price, studentCount, onClickRegister }) => {
+const CourseInfo = ({
+  id,
+  category,
+  name,
+  teacherId,
+  teacherName,
+  description,
+  price,
+  studentCount,
+  onClickRegister,
+}) => {
   const handleRegister = () => {
     onClickRegister(id);
   };
@@ -22,7 +32,9 @@ const CourseInfo = ({ id, category, name, teacher, description, price, studentCo
                   <Card.Header>{category}</Card.Header>
                   <Card.Body>
                     <Card.Title>{name}</Card.Title>
-                    <Card.Text>강사: {teacher}</Card.Text>
+                    <Card.Text>
+                      강사: <strong>{teacherName}</strong>
+                    </Card.Text>
                     <Card.Text>
                       <span className='text-primary'>{studentCount}</span>명의 수강생
                     </Card.Text>

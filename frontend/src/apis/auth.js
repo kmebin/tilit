@@ -1,8 +1,12 @@
 import { client } from './index';
 
 export const signup = async (form) => {
-  const { data } = await client.post('/auth/signup', { ...form });
-  return data;
+  try {
+    const { data } = await client.post('/auth/signup', { ...form });
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
 };
 
 export const login = async (form) => {

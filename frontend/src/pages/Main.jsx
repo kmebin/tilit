@@ -34,14 +34,22 @@ const Main = ({ user }) => {
   };
 
   const handleSearch = async (input) => {
-    const courses = await getCourses(input.category, input.keyword);
-    setCourses(courses);
+    const res = await getCourses(input.category, input.keyword);
+    if (res.status === 200) {
+      setCourses(res.data);
+    } else {
+      alert(res.message);
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const courses = await getCourses();
-      setCourses(courses);
+      const res = await getCourses();
+      if (res.status === 200) {
+        setCourses(res.data);
+      } else {
+        alert(res.message);
+      }
     };
     fetchData();
   }, []);
@@ -54,11 +62,21 @@ const Main = ({ user }) => {
         </h1>
       </Row>
       {user ? (
-        <h6 className='d-flex justify-content-end m-2'>
-          <span className='text-primary'>{user.nickname}</span>님 환영합니다!
-        </h6>
+        <div className='d-flex justify-content-end align-items-center m-3' style={{ lineHeight: 1.5 }}>
+          <div className='d-flex align-items-center mx-3'>
+            <h6 className='mb-0'>
+              <span className='text-primary'>{user.nickname}</span> 님 환영합니다!
+            </h6>
+          </div>
+          <div className='d-flex justify-content-end'>
+            <Link to={`/course/create`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Button className='me-2'>강의 생성</Button>
+            </Link>
+            <Button variant='outline-danger'>로그아웃</Button>
+          </div>
+        </div>
       ) : (
-        <div className='d-flex justify-content-end mb-3'>
+        <div className='d-flex justify-content-end m-3'>
           <Link to={`/login`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Button variant='outline-primary' className='me-2'>
               로그인
@@ -84,7 +102,12 @@ const Main = ({ user }) => {
                 </Col>
               </Row>
               <hr />
-              <CourseList courses={courses} onClickAddToCart={handleAddToCart} onClickSearch={handleSearch} />
+              <CourseList
+                courses={courses}
+                onClickAddToCart={handleAddToCart}
+                onClickSearch={handleSearch}
+                user={user}
+              />
             </Container>
           </Col>
           <Col md={4} className='summary p-4'>

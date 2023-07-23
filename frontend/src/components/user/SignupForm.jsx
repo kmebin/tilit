@@ -9,14 +9,13 @@ const SignupForm = ({ onClickSignup }) => {
   const { email, password } = form;
 
   const handleSubmit = (e) => {
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
+    e.preventDefault();
+
+    if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
     } else {
       onClickSignup(form);
     }
-
     setValidated(true);
   };
 
