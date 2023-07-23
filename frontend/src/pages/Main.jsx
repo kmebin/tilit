@@ -33,6 +33,7 @@ const Main = () => {
       navigate('/login');
     } else {
       alert(res.message);
+      setSelectedCourses([]);
     }
   };
 
