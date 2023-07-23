@@ -1,17 +1,15 @@
 import { Container, Row } from 'react-bootstrap';
-import LoginForm from '../components/user/LoginForm';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../apis/auth';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { updateCourse } from '../apis/course';
+import UpdateCourseForm from '../components/course/UpdateCourseForm';
 
-const Login = () => {
+const UpdateCourse = () => {
+  const { courseId } = useParams();
   const navigate = useNavigate();
 
-  const handleLogin = async (form) => {
-    const res = await login(form);
-
+  const handleUpdate = async (form) => {
+    const res = await updateCourse(courseId, form);
     if (res.status === 200) {
-      localStorage.setItem('id', res.data.id);
-      localStorage.setItem('nickname', res.data.nickname);
       navigate('/');
     } else {
       alert(res.message);
@@ -20,16 +18,16 @@ const Login = () => {
 
   return (
     <Container fluid className='px-5'>
-      <Row className='justify-content-center m-3'>
+      <Row className='justify-content-center m-4'>
         <Link to={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <h1 className='text-center'>
             <span className='text-primary'>tilit</span>
           </h1>
         </Link>
       </Row>
-      <LoginForm onClickLogin={handleLogin} />
+      <UpdateCourseForm onClickUpdate={handleUpdate} />
     </Container>
   );
 };
 
-export default Login;
+export default UpdateCourse;

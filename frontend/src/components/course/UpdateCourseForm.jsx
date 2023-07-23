@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { getCourseDetail } from '../../apis/course';
 
-const CreateCourseForm = ({ onClickCreate }) => {
+const UpdateCourseForm = ({ onClickUpdate }) => {
+  const { courseId } = useParams();
   const [validated, setValidated] = useState(false);
-  const [form, setForm] = useState({ category: 'APP', name: '', description: '', price: 0 });
-  const { category, name, description, price } = form;
+  const [form, setForm] = useState({ name: '', description: '', price: 0 });
+  const { name, description, price } = form;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getCourseDetail(courseId);
+      if (res.status === 200) {
+        setForm(res.data);
+      } else {
+        alert(res.message);
+      }
+    };
+    fetchData();
+  }, [courseId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,48 +27,33 @@ const CreateCourseForm = ({ onClickCreate }) => {
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      onClickCreate(form);
+      onClickUpdate(form);
     }
     setValidated(true);
   };
 
-  const handleCategoryChange = (e) => {
-    setForm({ ...form, category: e.target.value });
-  };
-
   const handleNameChange = (e) => {
     setForm({ ...form, name: e.target.value });
-    const length = e.target.length;
-    setValidated(length > 0 && length <= 100);
+    const isValid = e.target.checkValidity();
+    setValidated(isValid);
   };
 
   const handleDescriptionChange = (e) => {
     setForm({ ...form, description: e.target.value });
-    const length = e.target.length;
-    setValidated(length > 0);
+    const isValid = e.target.checkValidity();
+    setValidated(isValid);
   };
 
   const handlePriceChange = (e) => {
     setForm({ ...form, price: e.target.value });
-    setValidated(e.target.value > 0);
+    const isValid = e.target.checkValidity();
+    setValidated(isValid);
   };
 
   return (
     <Container style={{ maxWidth: '560px' }}>
-      <h4 className='mb-3 mt-5'>강의 생성</h4>
+      <h4 className='mb-3 mt-5'>강의 수정</h4>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group controlId='category' className='mb-3'>
-          <Form.Label>카테고리</Form.Label>
-          <Form.Select value={category} onChange={handleCategoryChange}>
-            <option value='WEB'>웹</option>
-            <option value='APP'>앱</option>
-            <option value='GAME'>게임</option>
-            <option value='ALGORITHM'>알고리즘</option>
-            <option value='DATABASE'>데이터베이스</option>
-            <option value='INFRA'>인프라</option>
-          </Form.Select>
-        </Form.Group>
-
         <Form.Group controlId='name' className='mb-3'>
           <Form.Label>강의명</Form.Label>
           <Form.Control
@@ -94,7 +93,7 @@ const CreateCourseForm = ({ onClickCreate }) => {
           <Col>
             <div className='d-grid'>
               <Button variant='primary' size='lg' type='submit' disabled={!validated}>
-                강의 생성
+                강의 수정
               </Button>
             </div>
           </Col>
@@ -113,4 +112,4 @@ const CreateCourseForm = ({ onClickCreate }) => {
   );
 };
 
-export default CreateCourseForm;
+export default UpdateCourseForm;

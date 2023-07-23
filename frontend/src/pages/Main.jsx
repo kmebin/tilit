@@ -4,11 +4,13 @@ import CourseList from '../components/course/CourseList';
 import Cart from '../components/course/Cart';
 import SearchBar from '../components/common/SearchBar';
 import { getCourses, registerCourses } from '../apis/course';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Main = ({ user }) => {
+const Main = () => {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
+  const nickname = localStorage.getItem('nickname');
 
   const handleAddToCart = (courseId) => {
     const course = courses.find((course) => course.id === courseId);
@@ -25,12 +27,11 @@ const Main = ({ user }) => {
 
   const handleRegister = async (courseIds) => {
     const res = await registerCourses(courseIds);
-
-    if (res.status === 201) {
+    if (res.status === 401) {
       alert(res.message);
-    } else {
-      alert(res.message);
+      navigate('/login');
     }
+    alert(res.message);
   };
 
   const handleSearch = async (input) => {
@@ -61,15 +62,15 @@ const Main = ({ user }) => {
           <span className='text-primary'>tilit</span>
         </h1>
       </Row>
-      {user ? (
+      {nickname ? (
         <div className='d-flex justify-content-end align-items-center m-3' style={{ lineHeight: 1.5 }}>
           <div className='d-flex align-items-center mx-3'>
             <h6 className='mb-0'>
-              <span className='text-primary'>{user.nickname}</span> 님 환영합니다!
+              <span className='text-primary'>{nickname}</span> 님 환영합니다!
             </h6>
           </div>
           <div className='d-flex justify-content-end'>
-            <Link to={`/course/create`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to={`/courses/create`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <Button className='me-2'>강의 생성</Button>
             </Link>
             <Button variant='outline-danger'>로그아웃</Button>
@@ -102,12 +103,7 @@ const Main = ({ user }) => {
                 </Col>
               </Row>
               <hr />
-              <CourseList
-                courses={courses}
-                onClickAddToCart={handleAddToCart}
-                onClickSearch={handleSearch}
-                user={user}
-              />
+              <CourseList courses={courses} onClickAddToCart={handleAddToCart} onClickSearch={handleSearch} />
             </Container>
           </Col>
           <Col md={4} className='summary p-4'>
