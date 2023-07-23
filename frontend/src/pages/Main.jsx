@@ -6,7 +6,7 @@ import SearchBar from '../components/common/SearchBar';
 import { getCourses, registerCourses } from '../apis/course';
 import { Link } from 'react-router-dom';
 
-const Main = ({ isLogin }) => {
+const Main = ({ user }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
 
@@ -25,6 +25,7 @@ const Main = ({ isLogin }) => {
 
   const handleRegister = async (courseIds) => {
     const res = await registerCourses(courseIds);
+
     if (res.status === 201) {
       alert(res.message);
     } else {
@@ -52,8 +53,10 @@ const Main = ({ isLogin }) => {
           <span className='text-primary'>tilit</span>
         </h1>
       </Row>
-      {isLogin ? (
-        <div>로그인한 사용자가 볼 내용</div>
+      {user ? (
+        <h6 className='d-flex justify-content-end m-2'>
+          <span className='text-primary'>{user.nickname}</span>님 환영합니다!
+        </h6>
       ) : (
         <div className='d-flex justify-content-end mb-3'>
           <Link to={`/login`} style={{ textDecoration: 'none', color: 'inherit' }}>

@@ -3,13 +3,14 @@ import LoginForm from '../components/user/LoginForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../apis/auth';
 
-const Login = ({ setIsLogin }) => {
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   const handleLogin = async (form) => {
     const res = await login(form);
+
     if (res.status === 200) {
-      setIsLogin(true);
+      setUser(res.data);
       navigate('/');
     } else {
       alert(res.message);

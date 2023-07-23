@@ -6,14 +6,14 @@ import Login from './pages/Login';
 import { useState } from 'react';
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState(null);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Main isLogin={isLogin} />} />
+        <Route path='/' element={<Main user={user} />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/login' element={<Login setIsLogin={setIsLogin} />} />
+        <Route path='/login' element={<Login setUser={setUser} />} />
         <Route path='/courses/:courseId' element={<CourseDetail />} />
       </Routes>
     </BrowserRouter>
