@@ -53,7 +53,9 @@ const Main = () => {
             회원가입
           </Button>
         </Link>
-        <Button variant='outline-primary'>로그인</Button>
+        <Link to={`/login`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Button variant='outline-primary'>로그인</Button>
+        </Link>
       </div>
       <Card>
         <Row>
