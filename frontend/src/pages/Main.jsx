@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import CourseList from '../components/course/CourseList';
 import Cart from '../components/course/Cart';
 import SearchBar from '../components/common/SearchBar';
-import { getCourses, registerCourses } from '../apis/course';
+import { getCourses, registerCourses, deleteCourse } from '../apis/course';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Main = () => {
@@ -38,6 +38,17 @@ const Main = () => {
     const res = await getCourses(input.category, input.keyword);
     if (res.status === 200) {
       setCourses(res.data);
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handleDelete = async (courseId) => {
+    const res = await deleteCourse(courseId);
+    if (res.status === 200) {
+      alert(res.message);
+      const courses = await getCourses();
+      setCourses(courses.data);
     } else {
       alert(res.message);
     }
@@ -103,7 +114,12 @@ const Main = () => {
                 </Col>
               </Row>
               <hr />
-              <CourseList courses={courses} onClickAddToCart={handleAddToCart} onClickSearch={handleSearch} />
+              <CourseList
+                courses={courses}
+                onClickAddToCart={handleAddToCart}
+                onClickSearch={handleSearch}
+                onClickDelete={handleDelete}
+              />
             </Container>
           </Col>
           <Col md={4} className='summary p-4'>
