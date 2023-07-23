@@ -10,7 +10,7 @@ const UpdateCourse = () => {
   const handleUpdate = async (form) => {
     const res = await updateCourse(courseId, form);
     if (res.status === 200) {
-      navigate('/');
+      navigate(-1);
     } else {
       alert(res.message);
     }

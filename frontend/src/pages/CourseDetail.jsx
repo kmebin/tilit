@@ -1,29 +1,33 @@
-import { useParams } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { getCourseDetail, registerCourses } from '../apis/course';
+import { deleteCourse, registerCourses } from '../apis/course';
 import CourseInfo from '../components/course/CourseInfo';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CourseDetail = () => {
-  const { courseId } = useParams();
-  const [courseDetail, setCourseDetail] = useState({});
+  const navigate = useNavigate();
 
   const handleRegister = async (courseId) => {
-    await registerCourses(courseId);
+    const res = await registerCourses(courseId);
+    if (res.status === 401) {
+      alert(res.message);
+      navigate('/login');
+    } else {
+      alert(res.message);
+    }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getCourseDetail(courseId);
-      if (res.status === 200) {
-        setCourseDetail(res.data);
-      } else {
-        alert(res.message);
-      }
-    };
-    fetchData();
-  }, [courseId]);
+  const handleDelete = async (courseId) => {
+    const res = await deleteCourse(courseId);
+    if (res.status === 200) {
+      alert(res.message);
+      navigate('/');
+    } else if (res.status === 401) {
+      alert(res.message);
+      navigate('/login');
+    } else {
+      alert(res.message);
+    }
+  };
 
   return (
     <Container fluid className='px-5'>
@@ -34,7 +38,7 @@ const CourseDetail = () => {
           </h1>
         </Link>
       </Row>
-      <CourseInfo {...courseDetail} onClickRegister={handleRegister} />
+      <CourseInfo onClickRegister={handleRegister} onClickDelete={handleDelete} />
     </Container>
   );
 };
