@@ -17,3 +17,12 @@ export const login = async (form) => {
     return error.response.data;
   }
 };
+
+export const logout = async () => {
+  try {
+    const { data } = await client.post('/auth/logout');
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

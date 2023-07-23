@@ -5,6 +5,7 @@ import Cart from '../components/course/Cart';
 import SearchBar from '../components/common/SearchBar';
 import { getCourses, registerCourses, deleteCourse } from '../apis/course';
 import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../apis/auth';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -30,8 +31,9 @@ const Main = () => {
     if (res.status === 401) {
       alert(res.message);
       navigate('/login');
+    } else {
+      alert(res.message);
     }
-    alert(res.message);
   };
 
   const handleSearch = async (input) => {
@@ -49,6 +51,18 @@ const Main = () => {
       alert(res.message);
       const courses = await getCourses();
       setCourses(courses.data);
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handleLogout = async () => {
+    const res = await logout();
+    if (res.status === 200) {
+      localStorage.removeItem('id');
+      localStorage.removeItem('nickname');
+      alert(res.message);
+      navigate('/');
     } else {
       alert(res.message);
     }
@@ -84,7 +98,9 @@ const Main = () => {
             <Link to={`/courses/create`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <Button className='me-2'>강의 생성</Button>
             </Link>
-            <Button variant='outline-danger'>로그아웃</Button>
+            <Button variant='outline-danger' onClick={handleLogout}>
+              로그아웃
+            </Button>
           </div>
         </div>
       ) : (
