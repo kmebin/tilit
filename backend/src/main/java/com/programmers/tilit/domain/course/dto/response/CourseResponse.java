@@ -10,7 +10,8 @@ public record CourseResponse(
     Long id,
     CourseCategory category,
     String name,
-    String teacher,
+    Long teacherId,
+    String teacherName,
     int price
 ) {
     public static CourseResponse from(Course course) {
@@ -18,7 +19,8 @@ public record CourseResponse(
             .id(course.getId())
             .category(course.getCategory())
             .name(course.getName())
-            .teacher(course.getTeacher().getNickname())
+            .teacherId(course.getTeacher().getId())
+            .teacherName(course.getTeacher().getNickname())
             .price(course.getPrice())
             .build();
     }
