@@ -36,7 +36,7 @@ const CreateCourseForm = ({ onClickCreate }) => {
 
   const handlePriceChange = (e) => {
     setForm({ ...form, price: e.target.value });
-    setValidated(e.target.value > 0);
+    setValidated(e.target.value >= 0);
   };
 
   return (
