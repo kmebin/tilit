@@ -3,6 +3,7 @@ import { Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { getCourseDetail, registerCourses } from '../apis/course';
 import CourseInfo from '../components/course/CourseInfo';
+import { Link } from 'react-router-dom';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -23,9 +24,11 @@ const CourseDetail = () => {
   return (
     <Container fluid className='px-5'>
       <Row className='justify-content-center m-4'>
-        <h1 className='text-center'>
-          <span className='text-primary'>tilit</span>
-        </h1>
+        <Link to={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1 className='text-center'>
+            <span className='text-primary'>tilit</span>
+          </h1>
+        </Link>
       </Row>
       <CourseInfo {...courseDetail} onClickRegister={handleRegister} />
     </Container>

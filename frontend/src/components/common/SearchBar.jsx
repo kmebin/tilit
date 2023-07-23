@@ -18,7 +18,7 @@ const SearchBar = ({ onClickSearch }) => {
 
   return (
     <Row className='align-items-center'>
-      <Col md={3}>
+      <Col md={4}>
         <Form.Select value={input.category} onChange={handleInputCategory}>
           <option value=''>전체</option>
           <option value='WEB'>웹</option>
@@ -29,7 +29,7 @@ const SearchBar = ({ onClickSearch }) => {
           <option value='INFRA'>인프라</option>
         </Form.Select>
       </Col>
-      <Col md={7}>
+      <Col md={6}>
         <Form.Control
           type='text'
           placeholder='검색어를 입력하세요'
@@ -38,9 +38,11 @@ const SearchBar = ({ onClickSearch }) => {
         />
       </Col>
       <Col md={2}>
-        <Button variant='secondary' onClick={handleSearch}>
-          검색
-        </Button>
+        <div className='d-grid'>
+          <Button variant='secondary' onClick={handleSearch}>
+            검색
+          </Button>
+        </div>
       </Col>
     </Row>
   );

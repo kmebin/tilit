@@ -6,7 +6,7 @@ import SearchBar from '../components/common/SearchBar';
 import { getCourses, registerCourses } from '../apis/course';
 import { Link } from 'react-router-dom';
 
-const Main = () => {
+const Main = ({ isLogin }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
 
@@ -24,7 +24,12 @@ const Main = () => {
   };
 
   const handleRegister = async (courseIds) => {
-    await registerCourses(courseIds);
+    const res = await registerCourses(courseIds);
+    if (res.status === 201) {
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
   };
 
   const handleSearch = async (input) => {
@@ -47,16 +52,20 @@ const Main = () => {
           <span className='text-primary'>tilit</span>
         </h1>
       </Row>
-      <div className='d-flex justify-content-end mb-3'>
-        <Link to={`/signup`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Button variant='outline-primary' className='me-2'>
-            회원가입
-          </Button>
-        </Link>
-        <Link to={`/login`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Button variant='outline-primary'>로그인</Button>
-        </Link>
-      </div>
+      {isLogin ? (
+        <div>로그인한 사용자가 볼 내용</div>
+      ) : (
+        <div className='d-flex justify-content-end mb-3'>
+          <Link to={`/login`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Button variant='outline-primary' className='me-2'>
+              로그인
+            </Button>
+          </Link>
+          <Link to={`/signup`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Button variant='outline-primary'>회원가입</Button>
+          </Link>
+        </div>
+      )}
       <Card>
         <Row>
           <Col md={8} className='mt-4 d-flex flex-column align-items-start p-3 pt-0'>

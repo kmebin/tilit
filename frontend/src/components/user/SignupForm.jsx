@@ -1,5 +1,5 @@
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const SignupForm = ({ onClickSignup }) => {
@@ -9,13 +9,14 @@ const SignupForm = ({ onClickSignup }) => {
   const { email, password } = form;
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (e.currentTarget.checkValidity() === false) {
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
       e.stopPropagation();
     } else {
       onClickSignup(form);
     }
+
     setValidated(true);
   };
 
@@ -27,14 +28,13 @@ const SignupForm = ({ onClickSignup }) => {
 
   const handlePasswordChange = (e) => {
     setForm({ ...form, password: e.target.value });
-    const isValid = e.target.checkValidity();
-    setValidated(isValid);
+    const length = e.target.length;
+    setValidated(length >= 8 && length <= 32);
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    const isValid = e.target.checkValidity();
-    setValidated(isValid);
+    setValidated(password === e.target.value);
   };
 
   return (
@@ -49,12 +49,9 @@ const SignupForm = ({ onClickSignup }) => {
             required
             value={email}
             onChange={handleEmailChange}
+            isInvalid={email.length === 0}
           />
-          {email.length ? (
-            <Form.Control.Feedback type='invalid'>이메일 형식이 올바르지 않습니다.</Form.Control.Feedback>
-          ) : (
-            <Form.Control.Feedback type='invalid'>이메일은 필수 값입니다.</Form.Control.Feedback>
-          )}
+          <Form.Control.Feedback type='invalid'>이메일 형식이 올바르지 않습니다.</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId='password' className='mb-3'>
@@ -65,7 +62,7 @@ const SignupForm = ({ onClickSignup }) => {
             required
             value={password}
             onChange={handlePasswordChange}
-            isInvalid={password.length !== 0 && (password.length < 8 || password.length > 32)}
+            isInvalid={password.length < 8 || password.length > 32}
           />
           <Form.Control.Feedback type='invalid'>비밀번호는 8자 이상, 32자 이하여야 합니다.</Form.Control.Feedback>
         </Form.Group>
@@ -78,10 +75,9 @@ const SignupForm = ({ onClickSignup }) => {
             required
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
+            isInvalid={password !== confirmPassword}
           />
-          {password !== confirmPassword ? (
-            <Form.Control.Feedback type='invalid'>비밀번호가 일치하지 않습니다.</Form.Control.Feedback>
-          ) : null}
+          <Form.Control.Feedback type='invalid'>비밀번호가 일치하지 않습니다.</Form.Control.Feedback>
         </Form.Group>
 
         <hr className='my-4' />

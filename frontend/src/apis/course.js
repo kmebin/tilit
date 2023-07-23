@@ -12,6 +12,10 @@ export const getCourseDetail = async (courseId) => {
 };
 
 export const registerCourses = async (courseIds) => {
-  const { data } = await client.post('/courses/register', { courseIds });
-  return data.data;
+  try {
+    const { data } = await client.post('/courses/register', { courseIds });
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
 };
