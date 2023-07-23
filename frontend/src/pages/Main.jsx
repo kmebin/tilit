@@ -83,10 +83,12 @@ const Main = () => {
 
   return (
     <Container fluid className='px-5'>
-      <Row className='justify-content-center m-3'>
-        <h1 className='text-center'>
-          <span className='text-primary'>tilit</span>
-        </h1>
+      <Row className='justify-content-center m-4'>
+        <Link to={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1 className='text-center'>
+            <span className='text-primary'>tilit</span>
+          </h1>
+        </Link>
       </Row>
       {nickname ? (
         <div className='d-flex justify-content-end align-items-center m-3' style={{ lineHeight: 1.5 }}>
