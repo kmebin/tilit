@@ -29,7 +29,7 @@ import lombok.val;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE course SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE course SET deleted_at = NOW(), name = NULL WHERE id = ?")
 public class Course extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
@@ -39,7 +39,7 @@ public class Course extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CourseCategory category;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String name;
 
     @Column(nullable = false)
