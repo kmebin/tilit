@@ -7,7 +7,6 @@ export const getCourses = async (category, keyword) => {
 };
 
 export const getCourseDetail = async (courseId) => {
-  console.log(courseId);
   const { data } = await client.get(`/courses/${courseId}`);
   return data.data;
 };

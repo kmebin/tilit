@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import CourseList from '../components/course/CourseList';
 import Cart from '../components/course/Cart';
 import SearchBar from '../components/common/SearchBar';
 import { getCourses, registerCourses } from '../apis/course';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
   const [courses, setCourses] = useState([]);
@@ -41,11 +42,19 @@ const Main = () => {
 
   return (
     <Container fluid className='px-5'>
-      <Row className='justify-content-center m-4'>
+      <Row className='justify-content-center m-3'>
         <h1 className='text-center'>
           <span className='text-primary'>tilit</span>
         </h1>
       </Row>
+      <div className='d-flex justify-content-end mb-3'>
+        <Link to={`/signup`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Button variant='outline-primary' className='me-2'>
+            회원가입
+          </Button>
+        </Link>
+        <Button variant='outline-primary'>로그인</Button>
+      </div>
       <Card>
         <Row>
           <Col md={8} className='mt-4 d-flex flex-column align-items-start p-3 pt-0'>

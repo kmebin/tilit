@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const CourseItem = ({ id, category, name, teacher, price, onClickAddToCart }) => {
   const [isAdded, setIsAdded] = useState(false);
 
-  const handleAddToCart = (event) => {
-    event.preventDefault();
+  const handleAddToCart = (e) => {
+    e.preventDefault();
     setIsAdded(true);
     onClickAddToCart(id);
   };
