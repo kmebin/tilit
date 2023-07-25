@@ -59,8 +59,6 @@ public class CourseService {
 
         val course = findCourseOrThrow(courseId);
         course.update(request.name(), request.description(), request.price());
-
-        courseRepository.save(course);
     }
 
     @Transactional
