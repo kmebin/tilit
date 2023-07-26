@@ -24,11 +24,13 @@ public abstract class BaseEntity {
     private Long id;
 
     @CreatedDate
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @Column
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 }

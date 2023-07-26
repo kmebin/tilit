@@ -52,7 +52,7 @@ public class Course extends BaseEntity {
     private int price;
 
     @ColumnDefault("0")
-    @Column(name = "student_count", nullable = false)
+    @Column(nullable = false)
     private int studentCount;
 
     @OneToMany(mappedBy = "course")
