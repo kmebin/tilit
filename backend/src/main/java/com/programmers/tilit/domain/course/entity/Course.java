@@ -20,6 +20,7 @@ import com.programmers.tilit.domain.user.entity.User;
 import com.programmers.tilit.global.common.BaseEntity;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ import lombok.val;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE course SET deleted_at = NOW(), name = NULL WHERE id = ?")
@@ -54,15 +57,6 @@ public class Course extends BaseEntity {
 
     @OneToMany(mappedBy = "course")
     private final List<CourseRegistration> courseRegistrations = new ArrayList<>();
-
-    @Builder
-    private Course(User teacher, CourseCategory category, String name, String description, int price) {
-        this.teacher = teacher;
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
 
     public static Course create(User teacher, CourseCategory category, String name, String description, int price) {
         return Course.builder()
