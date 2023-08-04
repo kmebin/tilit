@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,7 +20,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.programmers.tilit.domain.user.entity.User;
-import com.programmers.tilit.global.common.BaseEntity;
+import com.programmers.tilit.global.common.TimeEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,7 +36,11 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE course SET deleted_at = NOW(), name = NULL WHERE id = ?")
-public class Course extends BaseEntity {
+public class Course extends TimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
