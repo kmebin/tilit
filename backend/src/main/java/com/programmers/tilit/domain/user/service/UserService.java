@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User findUserOrThrow(Long userId) {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException(NO_USER));
     }

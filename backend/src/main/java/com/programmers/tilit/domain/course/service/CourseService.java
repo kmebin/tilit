@@ -41,7 +41,7 @@ public class CourseService {
     }
 
     public CourseDetailResponse getCourse(Long courseId) {
-        val course = findCourseOrThrow(courseId);
+        val course = getCourseById(courseId);
         return CourseDetailResponse.from(course);
     }
 
@@ -49,7 +49,7 @@ public class CourseService {
     public void createCourse(Long userId, CourseCreateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()));
 
-        val teacher = userService.findUserOrThrow(userId);
+        val teacher = userService.getUserById(userId);
         courseRepository.save(request.toEntity(teacher));
     }
 
@@ -57,13 +57,13 @@ public class CourseService {
     public void updateCourse(Long courseId, CourseUpdateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()), courseId);
 
-        val course = findCourseOrThrow(courseId);
+        val course = getCourseById(courseId);
         course.update(request.name(), request.description(), request.price());
     }
 
     @Transactional
     public void deleteCourse(Long courseId) {
-        val course = findCourseOrThrow(courseId);
+        val course = getCourseById(courseId);
 
         if (course.hasStudents()) {
             throw new CourseConflictException(CAN_NOT_DELETE_COURSE);
@@ -73,10 +73,10 @@ public class CourseService {
 
     @Transactional
     public void registerCourses(Long userId, CoursesRegisterRequest request) {
-        val student = userService.findUserOrThrow(userId);
+        val student = userService.getUserById(userId);
 
         request.courseIds().stream()
-            .map(this::findCourseOrThrow)
+            .map(this::getCourseById)
             .forEach(course -> registerCourse(course, student));
     }
 
@@ -91,7 +91,7 @@ public class CourseService {
         courseRegistrationRepository.save(courseRegistration);
     }
 
-    private Course findCourseOrThrow(Long courseId) {
+    private Course getCourseById(Long courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new CourseNotFoundException(NO_COURSE));
     }
