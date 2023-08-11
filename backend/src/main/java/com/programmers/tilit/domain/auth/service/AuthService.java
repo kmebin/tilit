@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 

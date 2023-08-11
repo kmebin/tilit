@@ -16,11 +16,10 @@ import com.programmers.tilit.domain.course.dto.response.CourseDetailResponse;
 import com.programmers.tilit.domain.course.dto.response.CourseResponse;
 import com.programmers.tilit.domain.course.entity.Course;
 import com.programmers.tilit.domain.course.exception.CourseConflictException;
-import com.programmers.tilit.domain.course.exception.CourseNotFoundException;
 import com.programmers.tilit.domain.course.repository.CourseRegistrationRepository;
 import com.programmers.tilit.domain.course.repository.CourseRepository;
 import com.programmers.tilit.domain.user.entity.User;
-import com.programmers.tilit.domain.user.service.UserService;
+import com.programmers.tilit.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -29,9 +28,10 @@ import lombok.val;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CourseService {
+
     private final CourseRepository courseRepository;
     private final CourseRegistrationRepository courseRegistrationRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     public List<CourseResponse> getCourses(CoursesRequest request) {
         val courses = courseRepository.findCourses(request.category(), request.keyword());
@@ -41,7 +41,7 @@ public class CourseService {
     }
 
     public CourseDetailResponse getCourse(Long courseId) {
-        val course = getCourseById(courseId);
+        val course = courseRepository.getById(courseId);
         return CourseDetailResponse.from(course);
     }
 
@@ -49,7 +49,7 @@ public class CourseService {
     public void createCourse(Long userId, CourseCreateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()));
 
-        val teacher = userService.getUserById(userId);
+        val teacher = userRepository.getById(userId);
         courseRepository.save(request.toEntity(teacher));
     }
 
@@ -57,13 +57,13 @@ public class CourseService {
     public void updateCourse(Long courseId, CourseUpdateRequest request) {
         validateDuplicate(courseRepository.findByName(request.name()), courseId);
 
-        val course = getCourseById(courseId);
+        val course = courseRepository.getById(courseId);
         course.update(request.name(), request.description(), request.price());
     }
 
     @Transactional
     public void deleteCourse(Long courseId) {
-        val course = getCourseById(courseId);
+        val course = courseRepository.getById(courseId);
 
         if (course.hasStudents()) {
             throw new CourseConflictException(CAN_NOT_DELETE_COURSE);
@@ -73,10 +73,10 @@ public class CourseService {
 
     @Transactional
     public void registerCourses(Long userId, CoursesRegisterRequest request) {
-        val student = userService.getUserById(userId);
+        val student = userRepository.getById(userId);
 
         request.courseIds().stream()
-            .map(this::getCourseById)
+            .map(courseRepository::getById)
             .forEach(course -> registerCourse(course, student));
     }
 
@@ -89,11 +89,6 @@ public class CourseService {
         val courseRegistration = course.register(student);
         courseRepository.save(course);
         courseRegistrationRepository.save(courseRegistration);
-    }
-
-    private Course getCourseById(Long courseId) {
-        return courseRepository.findById(courseId)
-            .orElseThrow(() -> new CourseNotFoundException(NO_COURSE));
     }
 
     private void validateDuplicate(Optional<Course> course) {
